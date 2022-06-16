@@ -1,10 +1,9 @@
-import json
 import requests
 from PIL import Image
 import streamlit as st
 
 
-FASTAPI_ENDPOINT = r"http://127.0.0.1:12345/predict"
+FASTAPI_ENDPOINT = r"https://veb-fastapi-back.herokuapp.com/predict"
 
 
 st.title("Image Classification Basic")
