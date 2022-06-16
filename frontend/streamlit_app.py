@@ -4,7 +4,7 @@ from PIL import Image
 import streamlit as st
 
 
-FASTAPI_ENDPOINT = "https://veb-fastapi-back.herokuapp.com/predict"
+FASTAPI_ENDPOINT = r"http://127.0.0.1:12345/predict"
 
 
 st.title("Image Classification Basic")
@@ -23,25 +23,24 @@ if submitted and uploaded_file is not None:
     st.image(image, caption="Uploaded image.")
     st.text(uploaded_file.name)
 
-    # # ==============================================================
-    # resp_get = requests.get(url=FASTAPI_ENDPOINT)
-    # get_response = json.loads(resp_get.text)
-    # st.write(get_response)
+    st.write("\nClassifying...")
 
     # ==============================================================
     send_data = uploaded_file.getvalue()  # byte data
     file = {"image_data": send_data}
 
-    st.write("\nClassifying...")
-
     resp_post = requests.post(url=FASTAPI_ENDPOINT, files=file)
-    predictions = json.loads(resp_post.text)
+    decoded_predictions = resp_post.json()
+    # ==============================================================
+
+    for key, value_dict in decoded_predictions.items():
+        pred_class = value_dict["class"]
+        pred_conf = value_dict["confidence"]
+
+        message = f"Class: {pred_class:<20} Score: {pred_conf}"
+        st.text(message)
 
     # ==============================================================
-    st.text("CLASS | SCORE")
-
-    for pred_dict in predictions:
-        st.write(f"{pred_dict['class']} | {pred_dict['confidence']}")
 
     submitted = False
     uploaded_file = None
