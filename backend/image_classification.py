@@ -57,7 +57,7 @@ async def predict(image):
 
 @app.get("/")
 async def root_page():  # user-defined Asynchronous function, the function name can be anything.
-    return {"message": "Connection establised, Welcome!!!"}
+    return {"message": "Connection established, Welcome!!!"}
 
 
 @app.post("/predict")
