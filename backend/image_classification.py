@@ -32,7 +32,8 @@ def get_model():
 async def read_imagefile(file, resize_to=(224, 224)):
     image = Image.open(BytesIO(file)).convert("RGB")
     image = image.resize(resize_to)
-    image = tf.convert_to_tensor(image, dtype=tf.float32)
+    image = tf.keras.utils.img_to_array(image, dtype=tf.float32)
+    # image = tf.convert_to_tensor(image, dtype=tf.float32)
     return image
 
 
