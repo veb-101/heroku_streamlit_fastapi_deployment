@@ -21,11 +21,16 @@ app = FastAPI(title="Image Classification using ResNet-18")
 def get_model():
     global MODEL
     MODEL = load_model("resnet18", compile=False)
+    # As the first pass through takes longer to run,
+    # we'll pass a dummy input through the model as first pass
+
+    # Passing dummy input through the model
+    MODEL.predict(tf.random.normal((1, 224, 224, 3)))
     return MODEL
 
 
 async def read_imagefile(file, resize_to=(224, 224)):
-    image = Image.open(BytesIO(file))
+    image = Image.open(BytesIO(file)).convert("RGB")
     image = image.resize(resize_to)
     image = tf.convert_to_tensor(image, dtype=tf.float32)
     return image
